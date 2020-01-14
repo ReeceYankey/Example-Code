@@ -66,27 +66,33 @@ try:
         rows = table.find_all("tr", class_="student_assignment")
         table_data = {"name": [], "date": [], "score": [], "max_score": [], "type": []}
         for row in rows:
-            if "group_total" in row["class"] or "final_grade" in row["class"]:  # skip elements that aren't assignments
+            # skip elements that aren't actually assignments
+            if "group_total" in row["class"] or "final_grade" in row["class"]:
                 continue
-
+            
+            #add name of assignment
             table_data["name"].append(row.find("a").text)
-
+            
+            #add type of assignment
             table_data["type"].append(row.find("div", class_="context").text)
-
+            
+            #add due date of assignment
             date = row.find("td", class_="due").text
             formatted_date = re.search(r"[A-Za-z]{3}\s\d{1,2}", date)
             if formatted_date:
                 table_data["date"].append(formatted_date.group(0))
             else:
                 table_data["date"].append("N/A")
-
+            
+            #add grade of assinment
             score = row.find("span", class_="original_score").text
             formattedScore = re.search(r"\S+", score)
             if formattedScore:
                 table_data["score"].append(formattedScore.group(0))
             else:
                 table_data["score"].append("N/A")
-
+            
+            #add maximum score of assignment
             max_score = row.find("td", class_="points_possible").text
             formatted_max_score = re.search(r"\S+", max_score)
             table_data["max_score"].append(formatted_max_score.group(0))  # should be guaranteed to exist

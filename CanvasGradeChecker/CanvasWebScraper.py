@@ -4,8 +4,6 @@ import pandas as pd
 from time import sleep
 import re
 from UpdateFromCSV import UpdateFromCSV
-# import openpyxl as xl
-# from GradeSheets import WeightedSheetHandler, PointSheetHandler
 
 driver = webdriver.Chrome(r"C:\Users\Reece\Desktop\Programming\Python\Storage\chromedriver.exe")
 try:
@@ -94,35 +92,11 @@ try:
             table_data["max_score"].append(formatted_max_score.group(0))  # should be guaranteed to exist
             # TODO: add weight of types using <table class="summary">
 
-            # printable checks for debugging
-            # print(row.find("a").text)
-            # print(row.find("div",class_="context").text)
-            # print(re.search(r"[A-Za-z]{3}\s\d{1,2}",row.find("td",class_="due").text).group(0))
-            # score = row.find("span",class_="original_score").text
-            # formattedScore = re.search(r"\S+",score)
-            # if formattedScore:
-            #     print(formattedScore.group(0))
-            # else:
-            #     print("N/A")
-            # result = row.find("td",class_="points_possible").text
-            # print(re.search(r"\S+",result).group(0))
 
         # store into csv
         table = pd.DataFrame(table_data)
         table.to_csv(class_name + ".csv")
 
-        # put into existing spreadsheet
-        # wb = xl.load_workbook(filename='Galipatia Academic Success Database.xlsx')
-        # try:
-        #     ws = wb[class_name]
-        #     # check type of point system
-        #     if '(WP)' in ws['A2'].value:
-        #         sheet = WeightedSheetHandler(ws)
-        #     else:
-        #         sheet = PointSheetHandler(ws)
-        #     sheet.update(table_data)
-        # finally:
-        #     wb.save('updated.xlsx')
 
     UpdateFromCSV(class_names)
 finally:

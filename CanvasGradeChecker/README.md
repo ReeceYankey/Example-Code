@@ -1,7 +1,5 @@
 CanvasWebScraper.py launches a chrome emulator where you just have to log in to canvas and it will automatically grab existing grades. It then stores these into csv files, updates the Galipatia Academic Success Database.xlsx accordingly, and saves it into a file called updated.xlsx. If you run UpdateFromCSV.py directly, it uses the existing csv files from a previous run to update the spreadsheet.
 
-Note: if a teacher doesn't put grades in Canvas, this program will empty that class's data
-
 Setup:
 1. pip install selenium
 2. pip install pandas

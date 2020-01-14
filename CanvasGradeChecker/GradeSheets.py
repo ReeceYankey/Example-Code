@@ -117,7 +117,7 @@ class WeightedSheetHandler:
 
         # TODO: fix potential conflict: table can be either list or pandas.core.series.Series
 
-        self.unmerge_ending_cells()
+        self.unmerge_ending_cells()  #merged cells cannot be modified, so all cells that are shifted must be unmerged then remerged at the end
         # set categories and weightings
         categories = list(Counter(table['type']))
         for r in range(len(categories)):

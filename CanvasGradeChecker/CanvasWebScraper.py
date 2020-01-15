@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup
 import pandas as pd
 from time import sleep
@@ -21,7 +22,7 @@ try:
             driver.find_element_by_class_name("ic-DashboardCard__link")
             print("logged in sucessfully")
             break
-        except Exception:
+        except NoSuchElementException:
             pass
     sleep(8)
 
@@ -70,13 +71,13 @@ try:
             if "group_total" in row["class"] or "final_grade" in row["class"]:
                 continue
             
-            #add name of assignment
+            # add name of assignment
             table_data["name"].append(row.find("a").text)
             
-            #add type of assignment
+            # add type of assignment
             table_data["type"].append(row.find("div", class_="context").text)
             
-            #add due date of assignment
+            # add due date of assignment
             date = row.find("td", class_="due").text
             formatted_date = re.search(r"[A-Za-z]{3}\s\d{1,2}", date)
             if formatted_date:
@@ -84,7 +85,7 @@ try:
             else:
                 table_data["date"].append("N/A")
             
-            #add grade of assinment
+            # add grade of assignment
             score = row.find("span", class_="original_score").text
             formattedScore = re.search(r"\S+", score)
             if formattedScore:
@@ -92,17 +93,14 @@ try:
             else:
                 table_data["score"].append("N/A")
             
-            #add maximum score of assignment
+            # add maximum score of assignment
             max_score = row.find("td", class_="points_possible").text
             formatted_max_score = re.search(r"\S+", max_score)
             table_data["max_score"].append(formatted_max_score.group(0))  # should be guaranteed to exist
-            # TODO: add weight of types using <table class="summary">
-
 
         # store into csv
         table = pd.DataFrame(table_data)
         table.to_csv(class_name + ".csv")
-
 
     UpdateFromCSV(class_names)
 finally:

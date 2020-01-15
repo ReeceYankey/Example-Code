@@ -6,13 +6,9 @@ from time import sleep
 import re
 from UpdateFromCSV import UpdateFromCSV
 
-driver = webdriver.Chrome(r"C:\Users\Reece\Desktop\Programming\Python\Storage\chromedriver.exe")
-try:
+
+with webdriver.Chrome(r"C:\Users\Reece\Desktop\Programming\Python\Storage\chromedriver.exe") as driver:
     driver.get("https://canvas.vt.edu/")
-    userElem = driver.find_element_by_name("j_username")
-    userElem.send_keys("rpyankey")
-    passElem = driver.find_element_by_name("j_password")
-    passElem.send_keys("")
 
     # ask user to login
     while True:
@@ -52,9 +48,7 @@ try:
     print(class_links)
     print(class_names)
 
-    for n in range(len(class_links)):
-        class_link = class_links[n]
-        class_name = class_names[n]
+    for class_link, class_name in zip(class_links, class_names):
         print("gathering data for: "+class_name)
 
         # goto link
@@ -67,7 +61,7 @@ try:
         rows = table.find_all("tr", class_="student_assignment")
         table_data = {"name": [], "date": [], "score": [], "max_score": [], "type": []}
         for row in rows:
-            # skip elements that aren't actually assignments
+            # skip elements picked up that aren't actually assignments
             if "group_total" in row["class"] or "final_grade" in row["class"]:
                 continue
             
@@ -103,5 +97,3 @@ try:
         table.to_csv(class_name + ".csv")
 
     UpdateFromCSV(class_names)
-finally:
-    driver.quit()

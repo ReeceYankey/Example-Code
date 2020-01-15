@@ -6,7 +6,6 @@ from collections import Counter
 class WeightedSheetHandler:
     def __init__(self, ws):
         self.ws = ws
-        # TODO: implement saved header_rows, ending_rows, etc.
 
     def is_header(self, row, column):
         try:
@@ -88,7 +87,6 @@ class WeightedSheetHandler:
         ws['R{}'.format(ending_rows[-1])].value = None
 
         # -----style cells-----
-        # TODO: color cells properly
         for i in [2, 8, 15]:
             for col in range(i, i + 4):
                 ws.cell(row=row, column=col)._style = copy(ws.cell(row=row - 1, column=col)._style)
@@ -122,7 +120,6 @@ class WeightedSheetHandler:
         categories = list(Counter(table['type']))
         for r in range(len(categories)):
             self.ws.cell(row=r + 16, column=2).value = categories[r]
-            # TODO: change weightings
 
         # add assignments to corresponding sections
         for sheet_col in [2, 8, 15]:
@@ -208,7 +205,6 @@ class PointSheetHandler:
                                           'G' + str(data_row_end))
 
         # -----style cells-----
-        # TODO: color cells properly
         for col in range(1, 8):
             ws.cell(row=row, column=col)._style = copy(ws.cell(row=row - 1, column=col)._style)
 
